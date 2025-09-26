@@ -1,0 +1,715 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Keep aspect ratio if custom image width or height is specified
+    \setkeys{Gin}{keepaspectratio}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+
+    \usepackage{iftex}
+    \ifPDFTeX
+        \usepackage[T1]{fontenc}
+        \IfFileExists{alphabeta.sty}{
+              \usepackage{alphabeta}
+          }{
+              \usepackage[mathletters]{ucs}
+              \usepackage[utf8x]{inputenc}
+          }
+    \else
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+    \fi
+
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage{array}     % table support for pandoc >= 2.11.3
+    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{soul}      % strikethrough (\st) support for pandoc >= 3.0.0
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+
+
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{CC\_2025\_Practica}
+    
+    
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@ges}{\let\PY@bf=\textbf\let\PY@it=\textit}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb.
+    \makeatletter
+        \newbox\Wrappedcontinuationbox
+        \newbox\Wrappedvisiblespacebox
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}}
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}}
+        \newcommand*\Wrappedcontinuationindent {3ex }
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox}
+        % Take advantage of the already applied Pygments mark-up to insert
+        % potential linebreaks for TeX processing.
+        %        {, <, #, %, $, ' and ": go to next line.
+        %        _, }, ^, &, >, - and ~: stay at end of broken line.
+        % Use of \textquotesingle for straight quote.
+        \newcommand*\Wrappedbreaksatspecials {%
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}%
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}%
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}%
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}%
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}%
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}%
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}%
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}%
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}%
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}%
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}%
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}%
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}%
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}%
+        }
+        % Some characters . , ; ? ! / are not pygmentized.
+        % This macro makes them "active" and they will insert potential linebreaks
+        \newcommand*\Wrappedbreaksatpunct {%
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}%
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}%
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}%
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}%
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}%
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}%
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}%
+            \catcode`\.\active
+            \catcode`\,\active
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active
+            \lccode`\~`\~
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \hypertarget{logo_encit.png}{%
+\subsection{\texorpdfstring{\protect\includegraphics{CC_2025_Practica_files/398ea254-5a51-4d41-b547-e7c65669aab9.png}}{LOGO\_ENCIT.png}}\label{logo_encit.png}}
+
+\# \textbf{ Cambio Climático } \#\# \textbf{Práctica: FaIR } \#\#\#
+Escuela Nacional de Ciencias de la Tierra \#\#\#\# Semestre 2025-I
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+Formato de entrega: 1 notebook por equipo, subido vía MACTI (Moodle).
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 0\tabcolsep) * \real{0.06}}@{}}
+\toprule
+\endhead
+\#\#\# \textbf{ Ejercicio 1 - Los escenarios (25 puntos) } \\
+Los escenarios de emisión son fundamentales para entender las
+proyecciones climáticas del futuro. Están hechos de narrativas
+socioeconómicas que se utilizan para estimar las emisiones futuras.
+¿Cómo se ven las diferentes especies químicas en FaIR para los distintos
+escenarios? En este ejercicio vamos a intentar entender mejor los
+escenarios a través de analizar las emisiones, forzamientos y
+temperatura resultante con FaIR: \\
+\#\#\#\# \textbf{ 1. Replique las simulaciones hechas en el notebook 1,
+es decir, haga una simulación utilizando todos los escenarios. En este
+caso utilice solamente 1 modelo a su elección. } \\
+\#\#\#\# \textbf{ 2. Compare las emisiones entre escenarios para los
+diferentes especies químicas. Algunas de las especies más importantes
+son:
+\texttt{{[}\textquotesingle{}CO2\ FFI\textquotesingle{},\textquotesingle{}CO2\ AFOLU\textquotesingle{},\textquotesingle{}CH4\textquotesingle{},\textquotesingle{}Sulfur\textquotesingle{},\textquotesingle{}OC\textquotesingle{},\textquotesingle{}NH3\textquotesingle{},\textquotesingle{}NOx\textquotesingle{},\textquotesingle{}N2O\textquotesingle{}{]}}.
+Para 5 especies de la lista, y una especie adicional que no se encuentre
+en la lista, seleccione e inspeccione los objetos de emisión y
+concentración de cada especie. } \\
+\#\#\#\# \textbf{ 2a. Grafique, especie por especie, la serie de tiempo
+de emisión para los 8 escenarios. } \\
+\#\#\#\# \textbf{ 2b. Explique, utilizando su conocimiento e
+investigación sobre los escenarios, la evolución temporal de las
+emisiones de estas 6 especies. Relacione su interpretación de las
+gráficas con las narrativas de los escenarios. No es estrictamente
+necesario que explique especie por especie, pero sí es importante no
+escatimar en el detalle de los diferentes escenarios. ¿Qué factores de
+los escenarios explican tendencias ascendentes o descendentes en cada
+escenario/especie? Si en algún momento lo considera necesario, puede
+agrupar los escenarios en grupos que compartan cierta característica,
+siempre y cuando dé una razón para esta agrupación. } \\
+\#\#\#\# \textbf{ 3. Grafique la serie de tiempo de forzamiento total y
+temperatura resultante para los 8 escenarios (cada variable en un solo
+objeto de figura). Con su conocimiento del inciso anterior, explique sus
+resultados. } \\
+\bottomrule
+\end{longtable}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \#\#\# \textbf{ Ejercicio 2 - El metano versus el dióxido de carbono (
+40 puntos) }
+
+Este ejercicio tiene como objetivo comparar los impactos climáticos del
+metano (CH\(_4\)) y el dióxido de carbono (CO\(_2\)), dos de los
+principales gases de efecto invernadero responsables del calentamiento
+global. Mientras que el CO\(_2\) es el gas más abundante y persistente,
+el CH\(_4\) tiene un potencial de calentamiento a corto plazo mucho
+mayor. La comparación entre estos dos gases es esencial para entender
+las diferentes estrategias de mitigación y sus impactos en el sistema
+climático. El metano, a pesar de su vida más corta en la atmósfera,
+puede contribuir de manera desproporcionada al calentamiento en escalas
+temporales más reducidas, lo que lo convierte en un objetivo crucial
+para las políticas climáticas inmediatas.
+
+\begin{itemize}
+\tightlist
+\item
+  Utilice un modelo diferente al del ejercicio anterior y al de otros
+  ejercicios de la práctica.
+\item
+  Realice 3 simulaciones con dos escenarios (en total son 6
+  simulaciones): ssp585 y el ssp460
+\end{itemize}
+
+\hypertarget{gruxe1ficas-a-mostrar-como-resultados}{%
+\subsubsection{Gráficas a mostrar como
+resultados}\label{gruxe1ficas-a-mostrar-como-resultados}}
+
+\begin{itemize}
+\tightlist
+\item
+  3 gráficas, como en los ejercicios previos, con nombres en los ejes,
+  chulas y bonitas.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Forzamiento radiativo.
+  \item
+    Anomalía de temperatura
+  \item
+    El desbalance radiativo en el tope de la atmósfera. (TOA)
+  \end{itemize}
+
+  La última variable no la hemos visto, pero se puede buscar escribiendo
+  el nombre de una clase de Fair (f) y luego buscando en las opciones.
+\end{itemize}
+
+\hypertarget{instrucciones}{%
+\subsubsection{Instrucciones}\label{instrucciones}}
+
+\hypertarget{realice-la-simulaciuxf3n-control-que-utilizaruxe1-los-paruxe1metros-por-default-del-escenario-ssp585-y-el-ssp460.-haga-una-gruxe1fica-de-forzamiento-radiativo-para-comparar-entre-ambos-escenarios.}{%
+\paragraph{\texorpdfstring{\textbf{ 1. Realice la simulación control,
+que utilizará los parámetros por default del escenario: ssp585 y el
+ssp460. Haga una gráfica de forzamiento radiativo para comparar entre
+ambos escenarios.
+}}{ 1. Realice la simulación control, que utilizará los parámetros por default del escenario: ssp585 y el ssp460. Haga una gráfica de forzamiento radiativo para comparar entre ambos escenarios. }}\label{realice-la-simulaciuxf3n-control-que-utilizaruxe1-los-paruxe1metros-por-default-del-escenario-ssp585-y-el-ssp460.-haga-una-gruxe1fica-de-forzamiento-radiativo-para-comparar-entre-ambos-escenarios.}}
+
+\hypertarget{realice-una-segunda-simulaciuxf3n-que-estuxe1-caracterizada-por-una-reducciuxf3n-repentina-del-metano-a-partir-del-auxf1o-2024.-entre-los-auxf1os-2024-y-2030-las-emisiones-de-ch_4-seruxe1n-la-mitad-de-las-originales-de-cada-escenario-y-partir-del-auxf1o-2030-seruxe1n-0.}{%
+\paragraph{\texorpdfstring{\textbf{ 2. Realice una segunda simulación
+que está caracterizada por una reducción repentina del metano a partir
+del año 2024. Entre los años 2024 y 2030 las emisiones de \(CH_4\) serán
+la mitad de las originales de cada escenario y partir del año 2030 serán
+0.
+}}{ 2. Realice una segunda simulación que está caracterizada por una reducción repentina del metano a partir del año 2024. Entre los años 2024 y 2030 las emisiones de CH\_4 serán la mitad de las originales de cada escenario y partir del año 2030 serán 0. }}\label{realice-una-segunda-simulaciuxf3n-que-estuxe1-caracterizada-por-una-reducciuxf3n-repentina-del-metano-a-partir-del-auxf1o-2024.-entre-los-auxf1os-2024-y-2030-las-emisiones-de-ch_4-seruxe1n-la-mitad-de-las-originales-de-cada-escenario-y-partir-del-auxf1o-2030-seruxe1n-0.}}
+
+\hypertarget{realice-una-segunda-simulaciuxf3n-que-estuxe1-caracterizada-por-una-reducciuxf3n-repentina-del-diuxf3xido-de-carbono-a-partir-del-auxf1o-2024.-entre-los-auxf1os-2024-y-2050-las-emisiones-de-co_2-seruxe1n-la-mitad-de-las-originales-de-cada-escenario-y-partir-del-auxf1o-2050-seruxe1n-iguales-a-un-14-del-valor-encontrado-en-las-condiciones-promedio-previas-a-1920.-para-esto-le-seruxe1-uxfatil-encontrar-el-valor-promedio-de-las-emisiones-antes-de-1920-y-guardarlo-como-una-variable.}{%
+\paragraph{\texorpdfstring{\textbf{ 3. Realice una segunda simulación
+que está caracterizada por una reducción repentina del dióxido de
+carbono a partir del año 2024. Entre los años 2024 y 2050 las emisiones
+de \(CO_2\) serán la mitad de las originales de cada escenario y partir
+del año 2050 serán iguales a un 1/4 del valor encontrado en las
+condiciones promedio previas a 1920. Para esto le será útil encontrar el
+valor promedio de las emisiones antes de 1920 y guardarlo como una
+variable.
+}}{ 3. Realice una segunda simulación que está caracterizada por una reducción repentina del dióxido de carbono a partir del año 2024. Entre los años 2024 y 2050 las emisiones de CO\_2 serán la mitad de las originales de cada escenario y partir del año 2050 serán iguales a un 1/4 del valor encontrado en las condiciones promedio previas a 1920. Para esto le será útil encontrar el valor promedio de las emisiones antes de 1920 y guardarlo como una variable. }}\label{realice-una-segunda-simulaciuxf3n-que-estuxe1-caracterizada-por-una-reducciuxf3n-repentina-del-diuxf3xido-de-carbono-a-partir-del-auxf1o-2024.-entre-los-auxf1os-2024-y-2050-las-emisiones-de-co_2-seruxe1n-la-mitad-de-las-originales-de-cada-escenario-y-partir-del-auxf1o-2050-seruxe1n-iguales-a-un-14-del-valor-encontrado-en-las-condiciones-promedio-previas-a-1920.-para-esto-le-seruxe1-uxfatil-encontrar-el-valor-promedio-de-las-emisiones-antes-de-1920-y-guardarlo-como-una-variable.}}
+
+\hypertarget{conteste-las-preguntas}{%
+\paragraph{\texorpdfstring{\textbf{ 4. Conteste las preguntas:
+}}{ 4. Conteste las preguntas: }}\label{conteste-las-preguntas}}
+
+\hypertarget{describa-las-diferencias-entre-las-6-simulaciones.-quuxe9-sucede-con-el-forzamiento-y-la-temperatura-en-cada-una-no-se-olvide-de-sus-simulaciones-control.}{%
+\paragraph{\texorpdfstring{\textbf{ - Describa las diferencias entre las
+6 simulaciones. ¿Qué sucede con el forzamiento y la temperatura en cada
+una? No se olvide de sus simulaciones control.
+}}{ - Describa las diferencias entre las 6 simulaciones. ¿Qué sucede con el forzamiento y la temperatura en cada una? No se olvide de sus simulaciones control. }}\label{describa-las-diferencias-entre-las-6-simulaciones.-quuxe9-sucede-con-el-forzamiento-y-la-temperatura-en-cada-una-no-se-olvide-de-sus-simulaciones-control.}}
+
+\hypertarget{entonces-quuxe9-es-muxe1s-importante-disminuir-a-0-las-emisiones-de-metano-o-disminuir-a-la-mitad-las-emisiones-de-co2-y-luego-a-14}{%
+\paragraph{\texorpdfstring{\textbf{ - Entonces qué es más importante,
+¿disminuir a 0 las emisiones de metano o disminuir a la mitad las
+emisiones de CO2 y luego a 1/4?
+}}{ - Entonces qué es más importante, ¿disminuir a 0 las emisiones de metano o disminuir a la mitad las emisiones de CO2 y luego a 1/4? }}\label{entonces-quuxe9-es-muxe1s-importante-disminuir-a-0-las-emisiones-de-metano-o-disminuir-a-la-mitad-las-emisiones-de-co2-y-luego-a-14}}
+
+\hypertarget{su-respuesta-depende-del-escenario-considerado-suxed-o-no}{%
+\paragraph{\texorpdfstring{\textbf{ - Su respuesta depende del escenario
+considerado, ¿sí o
+no?}}{ - Su respuesta depende del escenario considerado, ¿sí o no?}}\label{su-respuesta-depende-del-escenario-considerado-suxed-o-no}}
+
+\hypertarget{al-final-de-alguna-de-sus-simulaciones-el-balance-radiativo-en-el-tope-de-la-atmuxf3sfera-llega-a-un-balance-esto-es-lo-que-esperaruxeda-por-quuxe9}{%
+\paragraph{\texorpdfstring{\textbf{ - Al final de alguna de sus
+simulaciones, ¿el balance radiativo en el tope de la atmósfera llega a
+un balance? ¿Esto es lo que esperaría? ¿por qué?
+}}{ - Al final de alguna de sus simulaciones, ¿el balance radiativo en el tope de la atmósfera llega a un balance? ¿Esto es lo que esperaría? ¿por qué? }}\label{al-final-de-alguna-de-sus-simulaciones-el-balance-radiativo-en-el-tope-de-la-atmuxf3sfera-llega-a-un-balance-esto-es-lo-que-esperaruxeda-por-quuxe9}}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 0\tabcolsep) * \real{0.06}}@{}}
+\toprule
+\endhead
+\#\#\# \textbf{ Ejercicio 3 (Elegible: 40 puntos) } \\
+\#\#\# \textbf{ Opción A: Geoingeniería por aerosoles. } \\
+La geoingeniería por aerosoles, también conocida como geoingeniería
+solar o gestión de la radiación solar, es un concepto que involucra la
+manipulación deliberada de la atmósfera terrestre para contrarrestar el
+calentamiento global y sus efectos asociados. Una de las técnicas
+propuestas dentro de la geoingeniería por aerosoles implica la
+dispersión de partículas en la estratosfera para reflejar una parte de
+la radiación solar entrante y así reducir la cantidad de calor que llega
+a la superficie terrestre. \\
+\#\#\#\# \textbf{ 1. Realice una simulación con 1 modelo y el escenario
+ssp460. Esta será su simulación Control. } \\
+\#\#\#\# \textbf{ 2. Haga una simulación igual a la Control pero
+represente una situación semejante a la que sucedería si la humanidad
+decidiera optar por la geoingenería por aerosoles. Es decir, a través de
+la modificación de algún forzamiento o de la emisión de una o más
+especies, asemeje los efectos que considere que tendría dicha actividad.
+Su objetivo es contrarrestar, con un forzamiento negativo, al
+forzamiento positivo de los GEIs en el escenario utilizado. Necesita
+generar un forzamiento de la misma magnitud pero signo opuesto al de los
+GEIs. Piense en las especies en FaIR que podrían tener un forzamiento
+negativo. } \\
+\#\#\#\# \textbf{ 3. Muestre a través de varias gráficas, cómo su
+experimento tiene un forzamiento negativo tan fuerte que se ralentiza el
+calentamiento global por el escenario. Para esto, le podría ser útil
+considerar como objetivo que la serie de tiempo de temperatura se
+mantenga entre +1.0 y 2.0\(^\circ\) por encima de niveles
+pre-industriales hasta el año 2100. } \\
+\#\#\#\# \textbf{ 6. Grafique la serie de tiempo de temperatura de los 2
+experimentos. Explique sus resultados y discuta las implicaciones de la
+geoingeniería por aerosoles. Tal vez le sea útil leer:
+https://www.theguardian.com/commentisfree/2021/apr/22/climate-crisis-emergency-earth-day
+para explicar qué es el término ``termination shock'' y cómo se podría
+relacionar con sus resultados. ¿Qué tendría que suceder en su situación
+para que sucediese el ``termination shock''? } \\
+\#\#\# \textbf{ Opción B La pena climática } \\
+La ``pena climática'' es un término que se refiere al resultado de la
+reducción de la emisión de aerosoles, los cuales pueden tener efectos
+tanto en la calidad del aire como en el clima. Los aerosoles
+atmosféricos tienen, en promedio, un efecto de enfriamiento en el clima
+al reflejar la radiación solar de vuelta al espacio, contrarrestando
+parcialmente el calentamiento causado por los gases de efecto
+invernadero. Por otro lado, algunos aerosoles pueden ser contaminantes
+del aire y contribuir a la mala calidad del aire y a problemas de salud
+pública. \\
+Cuando se reduce la emisión de aerosoles como resultado de políticas
+ambientales que buscan mejorar la calidad del aire, como la reducción de
+la quema de combustibles fósiles, se podría producir un fenómeno
+conocido como ``pena climática''. Esta ``pena'', o castigo sería una
+traducción más adecuada, se refiere al hecho de que la disminución de
+los aerosoles puede eliminar parte de su efecto de enfriamiento en el
+clima, lo que lleva a un aumento neto de la temperatura global. \\
+\#\#\#\# \textbf{ 1. Replique las simulaciones hechas en el notebook 1
+para 2 modelos con los escenarios `ssp370' y `ssp585' (2x2
+simulaciones). } \\
+\#\#\#\# \textbf{ 2. Haga 4 simulaciones análogas pero, en cada una,
+modifique la emisión de las especies
+\texttt{{[}\textquotesingle{}Sulfur\textquotesingle{},\textquotesingle{}OC\textquotesingle{},\textquotesingle{}CO\textquotesingle{},\textquotesingle{}BC\textquotesingle{},\textquotesingle{}NOx\textquotesingle{},\textquotesingle{}NH3\textquotesingle{},\textquotesingle{}VOC\textquotesingle{},\textquotesingle{}N2O\textquotesingle{}{]}}
+y vuélvalas 0 a partir del año 2024. Esta simulación será representativa
+de emisiones de aerosoles netas 0. Explique por qué reducir estas
+emisiones sería equivalente a mejorar la calidad del aire. } \\
+\#\#\#\# \textbf{ 3. Grafique en 4 paneles la temperatura superficial
+resultado. En cada panel, grafique la simulación control correspondiente
+con el experimento sin aerosoles. } \\
+\#\#\#\# \textbf{ 4. Calcule la pena climática como la diferencia en la
+anomalía de temperatura entre su experimento y su experimento sin
+aerosoles para cada caso. Considere el promedio de temperatura en los
+últimos diez años (2090-2100) para ambas simulaciones antes de obtener
+la diferencia. } \\
+\#\#\#\# \textbf{ 5. Explique la magnitud, impacto y repercusión de la
+pena climática en sus simulaciones como resultado de la disminución
+abrupta y la tendencia hacia emisiones 0 de aerosoles. } \\
+\#\#\#\# \textbf{ Extra (+8 puntos). Demuestre si es cierto que los
+experimentos del punto 2 son ``emisiones de aerosoles netas 0'' o no.
+} \\
+\bottomrule
+\end{longtable}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \#\#\# \textbf{ Ejercicio Extra - La sensibilidad del clima ( 25 puntos)
+}
+
+Corra el modelo para todos los scenarios, es decir:
+
+\texttt{scenarios\ =\ {[}\textquotesingle{}ssp119\textquotesingle{},\ \textquotesingle{}ssp126\textquotesingle{},\ \textquotesingle{}ssp245\textquotesingle{},\ \textquotesingle{}ssp370\textquotesingle{},\ \textquotesingle{}ssp434\textquotesingle{},\ \textquotesingle{}ssp460\textquotesingle{},\ \textquotesingle{}ssp534-over\textquotesingle{},\ \textquotesingle{}ssp585\textquotesingle{}{]}}
+
+utilizando 6 modelos de su elección.
+
+\hypertarget{realice-las-simulaciones-de-manera-estuxe1ndar-sin-modificar-ninguna-especie-en-el-intervalo-de-tiempo-normal.}{%
+\paragraph{\texorpdfstring{\textbf{ 1. Realice las simulaciones de
+manera estándar, sin modificar ninguna especie, en el intervalo de
+tiempo normal.
+}}{ 1. Realice las simulaciones de manera estándar, sin modificar ninguna especie, en el intervalo de tiempo normal. }}\label{realice-las-simulaciones-de-manera-estuxe1ndar-sin-modificar-ninguna-especie-en-el-intervalo-de-tiempo-normal.}}
+
+\hypertarget{calcule-la-sensibilidad-del-clima-lambda-para-cada-modelo.-recuerde-que-definimos-lambda-como-lambdadelta-tdelta-f}{%
+\paragraph{\texorpdfstring{\textbf{ 2. Calcule la sensibilidad del clima
+\(\lambda\) para cada modelo. Recuerde que definimos \(\lambda\) como:
+\[              \lambda=\Delta T/\Delta F       \]
+}}{ 2. Calcule la sensibilidad del clima \textbackslash lambda para cada modelo. Recuerde que definimos \textbackslash lambda como:               \textbackslash lambda=\textbackslash Delta T/\textbackslash Delta F        }}\label{calcule-la-sensibilidad-del-clima-lambda-para-cada-modelo.-recuerde-que-definimos-lambda-como-lambdadelta-tdelta-f}}
+
+\hypertarget{a.-para-este-fin-calcule-la-anomaluxeda-de-temperatura-y-el-correspondiente-forzamiento-total-a-finales-de-siglo-en-cada-escenario.-basta-obtener-los-valores-al-final-de-la-simulaciuxf3n-promediando-ambas-variables-entre-2080-y-2100.}{%
+\paragraph{\texorpdfstring{\textbf{ 2a. Para este fin, calcule la
+anomalía de temperatura, y el correspondiente forzamiento total, a
+finales de siglo en cada escenario. Basta obtener los valores al final
+de la simulación promediando ambas variables entre 2080 y 2100.
+}}{ 2a. Para este fin, calcule la anomalía de temperatura, y el correspondiente forzamiento total, a finales de siglo en cada escenario. Basta obtener los valores al final de la simulación promediando ambas variables entre 2080 y 2100. }}\label{a.-para-este-fin-calcule-la-anomaluxeda-de-temperatura-y-el-correspondiente-forzamiento-total-a-finales-de-siglo-en-cada-escenario.-basta-obtener-los-valores-al-final-de-la-simulaciuxf3n-promediando-ambas-variables-entre-2080-y-2100.}}
+
+\hypertarget{utilizando-estos-valores-haga-para-cada-modelo-por-separado-un-gruxe1fico-de-dispersiuxf3n-f-vs-t-y-calcule-la-pendiente-de-esta-dispersiuxf3n-de-puntos.-la-pendiente-por-definiciuxf3n-es-lambda.}{%
+\paragraph{\texorpdfstring{\textbf{ 3. Utilizando estos valores, haga,
+para cada modelo por separado, un gráfico de dispersión F vs T, y
+calcule la pendiente de esta dispersión de puntos. La pendiente, por
+definición, es \(\lambda\).
+}}{ 3. Utilizando estos valores, haga, para cada modelo por separado, un gráfico de dispersión F vs T, y calcule la pendiente de esta dispersión de puntos. La pendiente, por definición, es \textbackslash lambda. }}\label{utilizando-estos-valores-haga-para-cada-modelo-por-separado-un-gruxe1fico-de-dispersiuxf3n-f-vs-t-y-calcule-la-pendiente-de-esta-dispersiuxf3n-de-puntos.-la-pendiente-por-definiciuxf3n-es-lambda.}}
+
+\hypertarget{reporte-los-resultados-de-la-pendiente-para-cada-modelo.-responda-obtuvo-los-mismos-valores-para-todos-los-modelos-por-quuxe9-son-parecidos-o-diferentes}{%
+\paragraph{\texorpdfstring{\textbf{ 4. Reporte los resultados de la
+pendiente para cada modelo. Responda, ¿Obtuvo los mismos valores para
+todos los modelos? ¿Por qué son parecidos o diferentes?
+}}{ 4. Reporte los resultados de la pendiente para cada modelo. Responda, ¿Obtuvo los mismos valores para todos los modelos? ¿Por qué son parecidos o diferentes? }}\label{reporte-los-resultados-de-la-pendiente-para-cada-modelo.-responda-obtuvo-los-mismos-valores-para-todos-los-modelos-por-quuxe9-son-parecidos-o-diferentes}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
